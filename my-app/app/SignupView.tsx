@@ -1,51 +1,73 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from 'expo-router';
 
-const SignupView = () => {
+// Define your parameter list for the stack navigator
+type RootStackParamList = {
+  Login: undefined;
+  SignUp: undefined;
+};
+
+type SignupScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
+
+const SignUpView: React.FC = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigation = useNavigation<SignupScreenNavigationProp>();
+
+  const handleSignUp = () => {
+    if (password !== confirmPassword) {
+      console.log("Passwords do not match");
+      return;
+    }
+    console.log('Sign up button pressed');
+    // Execute sign-up logic here
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => console.log('Back Pressed')} style={styles.backButton}>
-        <Text style={styles.backText}>← Back</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>Sign Up</Text>
+
+      <Text style={styles.header}>Sign Up</Text>
+
       <TextInput
         style={styles.input}
         placeholder="Full Name"
         value={fullName}
         onChangeText={setFullName}
       />
+
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
       />
+
       <TextInput
         style={styles.input}
         placeholder="Password"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
       />
+
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
+        secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={() => console.log('Sign Up Pressed')}>
+
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('Go to Login Clicked')}>
-        <Text style={styles.linkText}>Already have an account? Log in</Text>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -53,50 +75,39 @@ const SignupView = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 20,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f8f8',
   },
-  backButton: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-  },
-  backText: {
-    fontSize: 18,
-    color: '#007bff',
-  },
-  title: {
+  header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
   },
   input: {
-    width: '80%',
     height: 40,
-    borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderWidth: 1,
     marginBottom: 10,
-    backgroundColor: '#fff',
+    paddingLeft: 10,
+    borderRadius: 5,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#007BFF',
     padding: 10,
     borderRadius: 5,
-    width: '80%',
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
   },
-  linkText: {
-    marginTop: 15,
-    color: '#007bff',
+  link: {
+    color: '#007BFF',
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
 
-export default SignupView;
+export default SignUpView;

@@ -1,9 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet ,TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const LoginView = () => {
+type RootStackParamList = {
+    Login: undefined;
+    Signup: undefined;
+  };
+
+type LoginNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+
+const LoginView: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation<LoginNavigationProp>(); // use the type here
+
+  const handleLogin = () => {
+    console.log('Login button pressed');
+  };
+
+  const handleSignup = () => {
+    // Navigate to Signup screen
+    navigation.navigate('Signup');
+  };
 
   return (
     <View style={styles.container}>
@@ -22,15 +41,15 @@ const LoginView = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={() => console.log('Login Pressed')}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('Forgot Password Clicked')}>
-        <Text style={styles.linkText}>Forgot Password?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => console.log('Sign Up Clicked')}>
-        <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
-      </TouchableOpacity>
+
+      {/* Login Button */}
+      <Button title="Login" onPress={handleLogin} />
+
+    
+    <TouchableOpacity  onPress={handleSignup}>
+          <Text style={styles.link}>Don't have an account? Sign up</Text>
+    </TouchableOpacity>
+
     </View>
   );
 };
@@ -57,20 +76,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#fff',
   },
-  button: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    width: '80%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  linkText: {
-    marginTop: 15,
-    color: '#007bff',
+  link: {
+    color: '#007BFF',
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
 

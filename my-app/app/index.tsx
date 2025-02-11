@@ -1,24 +1,23 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import LoginView from './LoginView';
 import SignupView from './SignupView';
 
-const App = () => {
-  return (
-    <View style={styles.container}>
-      <LoginView />
-      <SignupView />
-    </View>
-  );
+// Define the parameter list for the stack navigator
+type RootStackParamList = {
+  Login: undefined;
+  Signup: undefined;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-});
+const Stack = createStackNavigator<RootStackParamList>();
+
+const App = () => {
+  return (
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginView} />
+        <Stack.Screen name="Signup" component={SignupView} />
+      </Stack.Navigator>
+  );
+};
 
 export default App;
